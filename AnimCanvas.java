@@ -17,6 +17,11 @@ public class AnimCanvas extends Canvas implements Runnable {
 	float vy, vy0=70;
 	final float gravity = 9.8f;
 	
+	// 画像
+	CharacterImage srcimg = null;
+	int src_cursor;
+	String[] direction = {"down", "left", "up", "right"};
+	
 	public AnimCanvas(int w, int h) {
 		this.w = w;
 		this.h = h;
@@ -25,6 +30,9 @@ public class AnimCanvas extends Canvas implements Runnable {
 		y = y0 = h / 2;
 		
 		setBackground(Color.WHITE);
+		
+		srcimg = new CharacterImage("img/pipo-charachip001.png");
+		src_cursor = 0;
 	}
 
 	public AnimCanvas(GraphicsConfiguration config) {
@@ -33,28 +41,22 @@ public class AnimCanvas extends Canvas implements Runnable {
 	
 
 	public void paint(Graphics g) {
-		g.setColor(Color.red);
-		g.fillOval(x, y, 50, 50);
+		String d = direction[(src_cursor/4) % 4];
+		g.drawImage(srcimg.getImage(d, src_cursor%4), x - srcimg.w, y - srcimg.h, srcimg.w * 2, srcimg.h * 2, null);
 	}
 	
 	public void update(Graphics g) {		
 		if (status == 1) {
-			
-			if (y >= y0) {
-				vy = vy0;
-			} else {
-				vy -= gravity;
-			}
-			y = (int) Math.min(y - vy, y0);
+			src_cursor += 1;
+			super.update(g);
 		}
-		super.update(g);
 	}
 
 	@Override
 	public void run() {
 		while (true) {
 			try {
-				Thread.sleep(100);
+				Thread.sleep(200);
 			} catch (InterruptedException e) {
 				System.err.println(e);
 			}
