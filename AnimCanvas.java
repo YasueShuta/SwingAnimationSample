@@ -54,7 +54,7 @@ public class AnimCanvas extends Canvas implements Runnable {
 	public void run() {
 		while (true) {
 			try {
-				Thread.sleep(200);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				System.err.println(e);
 			}
